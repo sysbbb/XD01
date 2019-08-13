@@ -8,23 +8,11 @@
 	
 	//exit;
 	$ch = curl_init($XuUrl);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER,TRUE);
-	curl_setopt($ch, CURLOPT_FOLLOWLOCATION,TRUE);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,FALSE);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER,TRUE);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,FALSE);
 	$pageContents = curl_exec($ch);
-	curl_close($ch);
-	
-	//if (curl_errno($ch)) {
-	//echo 'Curl error: ' . curl_error($ch);//捕抓异常
-	//}
-	
-	//if($pageContents===false){ // 用=== 而非 ==  是因為我們得區分出空值和布林值false
- 	//echo "cURL Error:".curl_error($ch);
-	//}
-	//else{
- 	//echo $pageContents;
-	//}
+	curl_close($ch);;
 
 	preg_match('/檔案名稱： \<b\>([^\<]+)/', $pageContents, $match);
 	$fn = $match[1];
@@ -61,15 +49,15 @@ curl_setopt($dlch, CURLOPT_POST, TRUE);
 curl_setopt($dlch, CURLOPT_POSTFIELDS, $post);
 curl_setopt($dlch, CURLOPT_SSL_VERIFYHOST,FALSE);
 curl_setopt($dlch, CURLOPT_SSL_VERIFYPEER,FALSE);
-//curl_setopt($dlch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101 Firefox/38.0');
+curl_setopt($dlch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101 Firefox/38.0');
 $result = curl_exec($dlch);
 
 
 curl_close($dlch);
 preg_match("/top.location.replace\('(\S+)'/", $result, $match);
 $DLink = $match[1];
-echo $DLink;
-exit;
+//echo $DLink;
+//exit;
 header("Location: $DLink");
 exit;
 
